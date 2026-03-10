@@ -10,9 +10,9 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<HomePage/>}></Route>
-        <Route path='/checkout.html' element ={<CheckoutPage/>}></Route>
-        <Route path='/orders.html' element ={<OrderPage />}></Route>
-        <Route path='/tracking.html' element ={<TrackingPage />}></Route>
+        <Route path='/checkout' element ={<CheckoutPage/>}></Route>
+        <Route path='/orders' element ={<OrderPage />}></Route>
+        <Route path='/tracking' element ={<TrackingPage />}></Route>
       </Routes>
     </>
   )
