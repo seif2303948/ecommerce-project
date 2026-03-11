@@ -1,8 +1,9 @@
 import { Link } from 'react-router'
-import './css/checkout.css'
-import './css/checkout-header.css'
+import '../css/checkout.css'
+import '../css/checkout-header.css'
 
-export function CheckoutPage(){
+
+function CheckoutPageHeader(){
     return(
         <>
             <div className="checkout-header">
@@ -24,6 +25,13 @@ export function CheckoutPage(){
                     </div>
                 </div>
             </div>
+        </>
+    );
+}
+export function CheckoutPage(){
+    return(
+        <>
+            <CheckoutPageHeader/>
 
             <div className="checkout-page">
                 <div className="page-title">Review your order</div>
