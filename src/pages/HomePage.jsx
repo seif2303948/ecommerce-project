@@ -1,7 +1,18 @@
+import { useState , useEffect } from 'react';
 import  Header  from '../components/Header.jsx'
-import { products } from '../data/products.js'
 import '../css/home-page.css'
-function Products({products}){
+
+
+
+
+function Products(){
+    let [products, setProducts] =useState([]);
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/api/products`)
+        .then((res) => res.json())
+        .then((products) => setProducts(products))
+    },[])
     return(
         <>
             {
@@ -69,7 +80,7 @@ export function HomePage(){
 
             <div className="home-page">
                 <div className="products-grid">
-                    <Products products = {products}/>
+                    <Products />
                 </div>
             </div>
         </>
