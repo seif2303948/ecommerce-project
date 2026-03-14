@@ -1,8 +1,10 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
 import '../css/header.css'
-function Header(){
+
+function Header({setText}){
     let [numOfItemsInCart, setNumOfItemsInCart] = useState(0);
+    
     useEffect(() => {
         fetch(`http://localhost:3000/api/cart-items`)
         .then((res) => res.json())
@@ -15,6 +17,9 @@ function Header(){
         })
 
     },[])
+    function textSave(ev){
+        setText(ev.target.value);
+    }
     return(
         <>
             <div className="header">
@@ -28,8 +33,12 @@ function Header(){
                 </div>
 
                 <div className="middle-section">
-                    <input className="search-bar" type="text" placeholder="Search" />
-
+                    <input 
+                        className="search-bar" 
+                        type="text" 
+                        placeholder="Search"
+                        onChange={textSave}
+                    />
                     <button className="search-button">
                     <img className="search-icon" src="images/icons/search-icon.png" />
                     </button>

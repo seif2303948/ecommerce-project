@@ -5,17 +5,21 @@ import '../css/home-page.css'
 
 
 
-function Products(){
+function Products({text}){
     let [products, setProducts] = useState([]);
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
         .then((res) => res.json())
         .then((products) => setProducts(products))
     },[])
+    
     return(
         <>
             {
-                products.map((product) =>{
+                products
+                .filter((product) =>
+                    product.name.toLowerCase().includes(text.toLowerCase())
+                ).map((product) =>{
                     return(
                         <div key = {product.id} className="product-container">
                             <div className="product-image-container">
@@ -73,14 +77,18 @@ function Products(){
     );
 }
 export function HomePage(){
-    
+    let [text , setText] = useState('');
     return(
         <>
-            <Header/>
+            <Header 
+                setText = {setText}
+                />
 
             <div className="home-page">
                 <div className="products-grid">
-                    <Products />
+                    <Products 
+                        text = {text}
+                    />
                 </div>
             </div>
         </>
