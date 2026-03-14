@@ -1,6 +1,20 @@
+import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
 import '../css/header.css'
 function Header(){
+    let [numOfItemsInCart, setNumOfItemsInCart] = useState(0);
+    useEffect(() => {
+        fetch(`http://localhost:3000/api/cart-items`)
+        .then((res) => res.json())
+        .then((items) => {
+            let numOfItems = 0;
+            items.map((item) =>{
+                numOfItems += item.quantity;
+            })
+            setNumOfItemsInCart(`${numOfItems}`);
+        })
+
+    },[])
     return(
         <>
             <div className="header">
@@ -29,7 +43,7 @@ function Header(){
 
                     <Link className="cart-link header-link" to="/checkout">
                     <img className="cart-icon" src="images/icons/cart-icon.png" />
-                    <div className="cart-quantity">3</div>
+                    <div className="cart-quantity">{numOfItemsInCart}</div>
                     <div className="cart-text">Cart</div>
                     </Link>
                 </div>

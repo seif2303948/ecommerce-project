@@ -6,8 +6,7 @@ import '../css/home-page.css'
 
 
 function Products(){
-    let [products, setProducts] =useState([]);
-
+    let [products, setProducts] = useState([]);
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
         .then((res) => res.json())
@@ -74,6 +73,7 @@ function Products(){
     );
 }
 export function HomePage(){
+    
     return(
         <>
             <Header/>
