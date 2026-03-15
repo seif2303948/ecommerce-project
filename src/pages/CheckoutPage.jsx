@@ -29,14 +29,7 @@ function CheckoutPageHeader(){
         </>
     );
 }
-export function CheckoutPage(){
-    let [products, setProducts] = useState([]);
-    useEffect(() => {
-        fetch(`/api/products`)
-        .then((res) => res.json())
-        .then((products) => setProducts(products))
-    },[])
-
+export function CheckoutPage({products}){
     let [productsInCart, setProductsInCart] = useState([]);
     useEffect(() => {
         fetch(`/api/cart-items`)

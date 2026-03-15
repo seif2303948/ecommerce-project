@@ -1,18 +1,11 @@
-import { useState , useEffect } from 'react';
+import { useState } from 'react';
 import  Header  from '../components/Header.jsx'
 import '../css/home-page.css'
 
 
 
 
-function Products({text}){
-    let [products, setProducts] = useState([]);
-    useEffect(() => {
-        fetch(`/api/products`)
-        .then((res) => res.json())
-        .then((products) => setProducts(products))
-    },[])
-    
+function Products({text , products}){
     return(
         <>
             {
@@ -76,7 +69,7 @@ function Products({text}){
         </>
     );
 }
-export function HomePage(){
+export function HomePage({products}){
     let [text , setText] = useState('');
     return(
         <>
@@ -88,6 +81,7 @@ export function HomePage(){
                 <div className="products-grid">
                     <Products 
                         text = {text}
+                        products={products}
                     />
                 </div>
             </div>

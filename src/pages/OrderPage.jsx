@@ -2,20 +2,14 @@ import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
 import  Header  from '../components/Header.jsx'
 import '../css/orders.css'
-export function OrderPage(){
+export function OrderPage({productsInStock}){
     let [orderedProducts , setOrderedProducts] = useState([]);
     useEffect(()=>{
         fetch(`/api/orders`)
         .then((res)=> res.json())
         .then((products) => setOrderedProducts(products))
     },[])
-    let [productsInStock, setProductsInStock] = useState([]);
-    useEffect(() => {
-        fetch(`/api/products`)
-        .then((res) => res.json())
-        .then((products) => setProductsInStock(products))
 
-    },[])
     const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
