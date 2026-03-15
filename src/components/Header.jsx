@@ -6,7 +6,7 @@ function Header({setText}){
     let [numOfItemsInCart, setNumOfItemsInCart] = useState(0);
     
     useEffect(() => {
-        fetch(`http://localhost:3000/api/cart-items`)
+        fetch(`/api/cart-items`)
         .then((res) => res.json())
         .then((items) => {
             let numOfItems = 0;
