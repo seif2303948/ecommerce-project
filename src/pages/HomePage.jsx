@@ -88,34 +88,31 @@ function Products({text , products}){
                         </div>
             
                         <div className="product-name limit-text-to-2-lines">
-                            <Skeleton count={1} />
+                            <Skeleton  />
                         </div>
         
                         <div className="product-rating-container">
-                            <img className="product-rating-stars" />
-                            <div className="product-rating-count link-primary">
-                                <Skeleton count={1} />
-                            </div>
+                            <Skeleton width={100} height={20}/>
                         </div>
         
                         <div className="product-price">
-                            <Skeleton count={1} />
+                            <Skeleton  width={50}/>
                         </div>
         
                         <div className="product-quantity-container">
-                            <Skeleton count={1} />
+                            <Skeleton width={50} height={25} />
                         </div>
         
                         <div className="product-spacer">
-                            <Skeleton count={1} />
+                            
                         </div>
         
                         <div className="added-to-cart">
                             <img src="images/icons/checkmark.png" />
                             Added
                         </div>
-        
-                        <Skeleton count={1} />
+                        <Skeleton width={220} height={30}/>
+                        
                     </div>
                 );
             })
