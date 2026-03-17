@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import  Header  from '../components/Header.jsx'
 import '../css/home-page.css'
 
@@ -6,16 +8,18 @@ import '../css/home-page.css'
 
 
 function Products({text , products}){
-    return(
-        <>
-            {
-                products
-                .filter((product) =>
-                    product.name.toLowerCase().includes(text.toLowerCase())
-                ).map((product) =>{
-                    return(
-                        <div key = {product.id} className="product-container">
-                            <div className="product-image-container">
+    let filteredProducts = products.filter((product) =>
+            product.name.toLowerCase().includes(text.toLowerCase())
+        )
+            
+    if(products.length > 0){
+        return(
+            <>
+                {   
+                    filteredProducts.map((product) =>{
+                        return(
+                            <div key = {product.id} className="product-container">
+                                <div className="product-image-container">
                                     <img className="product-image"
                                     src={product.image} />
                                 </div>
@@ -62,12 +66,61 @@ function Products({text , products}){
                                     Add to Cart
                                 </button>
                             </div>
-                    );
-                })
-            }
+                        )
+                    })
+                    
+                }
+                
+            </>
+        );
+    }else{
+        let skeletonLoadingBoxes =[];
+        let numberOfSkeletonLoadingBoxes = 20;
+        for(let i = 0 ; i < numberOfSkeletonLoadingBoxes ;++i){
+            skeletonLoadingBoxes.push(i);
+        }
+        return(
+            skeletonLoadingBoxes.map((skeletonLoadingBoxNumber)=>{
+                return(
+                    <div  className="product-container" key={skeletonLoadingBoxNumber}>
+                        <div className="product-image-container">
+                            <Skeleton width={220} height={180} />
+                        </div>
             
-        </>
-    );
+                        <div className="product-name limit-text-to-2-lines">
+                            <Skeleton count={1} />
+                        </div>
+        
+                        <div className="product-rating-container">
+                            <img className="product-rating-stars" />
+                            <div className="product-rating-count link-primary">
+                                <Skeleton count={1} />
+                            </div>
+                        </div>
+        
+                        <div className="product-price">
+                            <Skeleton count={1} />
+                        </div>
+        
+                        <div className="product-quantity-container">
+                            <Skeleton count={1} />
+                        </div>
+        
+                        <div className="product-spacer">
+                            <Skeleton count={1} />
+                        </div>
+        
+                        <div className="added-to-cart">
+                            <img src="images/icons/checkmark.png" />
+                            Added
+                        </div>
+        
+                        <Skeleton count={1} />
+                    </div>
+                );
+            })
+        )
+    }
 }
 export function HomePage({products}){
     let [text , setText] = useState('');

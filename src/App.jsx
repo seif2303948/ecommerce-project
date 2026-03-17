@@ -7,11 +7,21 @@ import { TrackingPage } from './pages/TrakingPage';
 
 function App() {
   let [products, setProducts] = useState([]);
-    useEffect(() => {
-        fetch(`/api/products`)
-        .then((res) => res.json())
-        .then((products) => setProducts(products))
-    },[])
+  useEffect(() => {
+    setTimeout(()=>{
+      fetch('/api/products')
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((products) => setProducts(products))
+    .catch((error) => {
+      console.error(error);
+    });
+    },500);
+}, []);
     
   return (
     <>
