@@ -1,5 +1,7 @@
-import { useState ,useEffect } from 'react';
+import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
+import { numberOfSkeletonLoadingBoxesFun } from '../utils/loading';
+import { formatMoney } from '../utils/money';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../css/checkout.css'
@@ -31,17 +33,23 @@ function CheckoutPageHeader(){
         </>
     );
 }
-export function CheckoutPage({products}){
-    let [productsInCart, setProductsInCart] = useState([]);
-    useEffect(() => {
-        fetch(`/api/cart-items`)
-        .then((res) => res.json())
-        .then((items) => setProductsInCart(items))
-
-    },[])
+export function CheckoutPage({productsInCart}){
+    let [delivryOptions , setDelivryOptions] = useState([]);
+    useEffect(() =>{
+        setTimeout(()=>{
+            fetch(`/api/delivery-options?expand=estimatedDeliveryTime`)
+            .then((res)=>{
+                if(!res.ok){
+                    console.log(`HTTP error ! status : ${res.status}`)
+                }
+                return res.json()
+            })
+            .then((items) => setDelivryOptions(items))
+            .catch((error)=>{console.log(error)})
+            },500)
+    },[]);
     let countOfProduntsInCart = 0;
-    if(products.length > 0){
-
+    if(productsInCart.length > 0){
         return(
             <>
                 <CheckoutPageHeader/>
@@ -52,89 +60,83 @@ export function CheckoutPage({products}){
                         <div className="order-summary">
                             {
                                 productsInCart.map((productIncart)=>{
+                                    countOfProduntsInCart++;
                                     return(
-                                        products.map((product)=>{
-                                            if(product.id === productIncart.productId){
-                                                countOfProduntsInCart += 1;
-                                                return(  
-                                                    <div className="cart-item-container" key = {productIncart.id}>
-                                                        <div className="delivery-date">
-                                                        Delivery date: Tuesday, June 21
-                                                        </div>
-        
-                                                        <div className="cart-item-details-grid">
-                                                        <img className="product-image"
-                                                            src={product.image} />
-        
-                                                        <div className="cart-item-details">
-                                                            <div className="product-name">
-                                                            {product.name}
-                                                            </div>
-                                                            <div className="product-price">
-                                                            ${(product.priceCents / 100).toFixed(2)}
-                                                            </div>
-                                                            <div className="product-quantity">
-                                                            <span>
-                                                                Quantity: <span className="quantity-label">{productIncart.quantity}</span>
-                                                            </span>
-                                                            <span className="update-quantity-link link-primary">
-                                                                Update
-                                                            </span>
-                                                            <span className="delete-quantity-link link-primary">
-                                                                Delete
-                                                            </span>
-                                                            </div>
-                                                        </div>
-        
-                                                        <div className="delivery-options">
-                                                            <div className="delivery-options-title">
-                                                            Choose a delivery option:
-                                                            </div>
-                                                            <div className="delivery-option">
-                                                            <input type="radio" defaultChecked ={true}
-                                                                className="delivery-option-input"
-                                                                name={`delivery-option-${countOfProduntsInCart}`} />
-                                                            <div>
-                                                                <div className="delivery-option-date">
-                                                                Tuesday, June 21
-                                                                </div>
-                                                                <div className="delivery-option-price">
-                                                                FREE Shipping
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                            <div className="delivery-option">
-                                                            <input type="radio"
-                                                                className="delivery-option-input"
-                                                                name={`delivery-option-${countOfProduntsInCart}`} />
-                                                            <div>
-                                                                <div className="delivery-option-date">
-                                                                Wednesday, June 15
-                                                                </div>
-                                                                <div className="delivery-option-price">
-                                                                $4.99 - Shipping
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                            <div className="delivery-option">
-                                                            <input type="radio"
-                                                                className="delivery-option-input"
-                                                                name={`delivery-option-${countOfProduntsInCart}`} />
-                                                            <div>
-                                                                <div className="delivery-option-date">
-                                                                Monday, June 13
-                                                                </div>
-                                                                <div className="delivery-option-price">
-                                                                $9.99 - Shipping
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
+                                        <div className="cart-item-container" key = {productIncart.id}>
+                                            <div className="delivery-date">
+                                            Delivery date: Tuesday, June 21
+                                            </div>
+
+                                            <div className="cart-item-details-grid">
+                                            <img className="product-image"
+                                                src={productIncart.product.image} />
+
+                                            <div className="cart-item-details">
+                                                <div className="product-name">
+                                                {productIncart.product.name}
+                                                </div>
+                                                <div className="product-price">
+                                                {formatMoney(productIncart.product.priceCents)}
+                                                </div>
+                                                <div className="product-quantity">
+                                                <span>
+                                                    Quantity: <span className="quantity-label">{productIncart.quantity}</span>
+                                                </span>
+                                                <span className="update-quantity-link link-primary">
+                                                    Update
+                                                </span>
+                                                <span className="delete-quantity-link link-primary">
+                                                    Delete
+                                                </span>
+                                                </div>
+                                            </div>
+
+                                            <div className="delivery-options">
+                                                <div className="delivery-options-title">
+                                                Choose a delivery option:
+                                                </div>
+                                                <div className="delivery-option">
+                                                <input type="radio" defaultChecked ={true}
+                                                    className="delivery-option-input"
+                                                    name={`delivery-option-${countOfProduntsInCart}`} />
+                                                <div>
+                                                    <div className="delivery-option-date">
+                                                    Tuesday, June 21
                                                     </div>
-                                                );
-                                            }
-                                        })
+                                                    <div className="delivery-option-price">
+                                                    FREE Shipping
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div className="delivery-option">
+                                                <input type="radio"
+                                                    className="delivery-option-input"
+                                                    name={`delivery-option-${countOfProduntsInCart}`} />
+                                                <div>
+                                                    <div className="delivery-option-date">
+                                                    Wednesday, June 15
+                                                    </div>
+                                                    <div className="delivery-option-price">
+                                                    $4.99 - Shipping
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div className="delivery-option">
+                                                <input type="radio"
+                                                    className="delivery-option-input"
+                                                    name={`delivery-option-${countOfProduntsInCart}`} />
+                                                <div>
+                                                    <div className="delivery-option-date">
+                                                    Monday, June 13
+                                                    </div>
+                                                    <div className="delivery-option-price">
+                                                    $9.99 - Shipping
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
                                     );
                                 })
                             }
@@ -180,17 +182,13 @@ export function CheckoutPage({products}){
         );
     }
     else{
-        let skeletonLoadingBoxes =[];
-        let numberOfSkeletonLoadingBoxes = 2;
-        for(let i = 0 ; i < numberOfSkeletonLoadingBoxes ;++i){
-            skeletonLoadingBoxes.push(i);
-        }
+        let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(3)
         return(
             <>
                 <CheckoutPageHeader/>
                 <div className="checkout-page">
                     <div className="page-title">
-                        <Skeleton width={200} height={27}/>
+                        Review your order
                     </div>
                     <div className="checkout-grid">
                         <div className="order-summary">

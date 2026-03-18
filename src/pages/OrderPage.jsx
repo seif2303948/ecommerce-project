@@ -1,4 +1,7 @@
 import { useState , useEffect } from 'react';
+import { numberOfSkeletonLoadingBoxesFun } from '../utils/loading.js';
+import { formatMoney } from '../utils/money.js';
+import { dateEstimater } from '../utils/dateEstimater.js';
 import { Link } from 'react-router'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -11,7 +14,6 @@ export function OrderPage({productsInStock}){
         .then((res)=> res.json())
         .then((products) => setOrderedProducts(products))
     },[])
-
     const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -35,7 +37,7 @@ export function OrderPage({productsInStock}){
                                             </div>
                                             <div className="order-total">
                                                 <div className="order-header-label">Total:</div>
-                                                <div>${(order.totalCostCents / 100).toFixed(2)}</div>
+                                                <div>{formatMoney(order.totalCostCents)}</div>
                                             </div>
                                             </div>
 
@@ -75,7 +77,7 @@ export function OrderPage({productsInStock}){
                                                             }
                                                         </div>
                                                         <div className="product-delivery-date">
-                                                            Arriving on: {monthNames[(new Date(productOrdered.estimatedDeliveryTimeMs).getMonth())]} {(new Date(productOrdered.estimatedDeliveryTimeMs).getDate())}
+                                                            Arriving on: {dateEstimater(productOrdered.estimatedDeliveryTimeMs)}
                                                         </div>
                                                         <div className="product-quantity">
                                                             Quantity: {productOrdered.quantity}
@@ -109,11 +111,7 @@ export function OrderPage({productsInStock}){
 
     }
     else{
-        let skeletonLoadingBoxes =[];
-        let numberOfSkeletonLoadingBoxes = 2;
-        for(let i = 0 ; i < numberOfSkeletonLoadingBoxes ;++i){
-            skeletonLoadingBoxes.push(i);
-        }
+        let skeletonLoadingBoxes =numberOfSkeletonLoadingBoxesFun(3);
         return(
             <>
                 <Header/>

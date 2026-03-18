@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { numberOfSkeletonLoadingBoxesFun } from '../utils/loading.js';
+import { formatMoney } from '../utils/money.js';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import  Header  from '../components/Header.jsx'
@@ -37,7 +39,7 @@ function Products({text , products}){
                                 </div>
                 
                                 <div className="product-price">
-                                    ${(product.priceCents / 100).toFixed(2)}
+                                    {formatMoney(product.priceCents)}
                                 </div>
                 
                                 <div className="product-quantity-container">
@@ -74,11 +76,7 @@ function Products({text , products}){
             </>
         );
     }else{
-        let skeletonLoadingBoxes =[];
-        let numberOfSkeletonLoadingBoxes = 20;
-        for(let i = 0 ; i < numberOfSkeletonLoadingBoxes ;++i){
-            skeletonLoadingBoxes.push(i);
-        }
+        let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(42);
         return(
             skeletonLoadingBoxes.map((skeletonLoadingBoxNumber)=>{
                 return(
