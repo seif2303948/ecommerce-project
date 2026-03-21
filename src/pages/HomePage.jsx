@@ -11,7 +11,9 @@ import '../css/home-page.css'
 
 function Products({text , products}){
     let filteredProducts = products.filter((product) =>
-            product.name.toLowerCase().includes(text.toLowerCase())
+            product.keywords.some((keyword)=>{
+                return keyword.toLowerCase().includes(text.toLowerCase());
+            })
         )
             
     if(products.length > 0){

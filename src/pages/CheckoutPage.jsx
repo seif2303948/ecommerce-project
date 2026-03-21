@@ -2,6 +2,7 @@ import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
 import { numberOfSkeletonLoadingBoxesFun } from '../utils/loading';
 import { formatMoney } from '../utils/money';
+import { dateEstimater , calculateFutureDayMilliseconds } from '../utils/dateEstimater';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../css/checkout.css'
@@ -34,7 +35,7 @@ function CheckoutPageHeader(){
     );
 }
 export function CheckoutPage({productsInCart}){
-    let [delivryOptions , setDelivryOptions] = useState([]);
+    let [deliveryOptions , setDeliveryOptions] = useState([]);
     useEffect(() =>{
         setTimeout(()=>{
             fetch(`/api/delivery-options?expand=estimatedDeliveryTime`)
@@ -44,97 +45,89 @@ export function CheckoutPage({productsInCart}){
                 }
                 return res.json()
             })
-            .then((items) => setDelivryOptions(items))
+            .then((items) => setDeliveryOptions(items))
             .catch((error)=>{console.log(error)})
             },500)
     },[]);
-    let countOfProduntsInCart = 0;
+    
     if(productsInCart.length > 0){
         return(
             <>
                 <CheckoutPageHeader/>
                 <div className="checkout-page">
+
                     <div className="page-title">Review your order</div>
-    
+
                     <div className="checkout-grid">
                         <div className="order-summary">
                             {
                                 productsInCart.map((productIncart)=>{
-                                    countOfProduntsInCart++;
                                     return(
                                         <div className="cart-item-container" key = {productIncart.id}>
                                             <div className="delivery-date">
-                                            Delivery date: Tuesday, June 21
+                                                {
+                                                    deliveryOptions.length>0 && deliveryOptions.map((deliveryOption)=>{
+                                                        if(deliveryOption.id === productIncart.deliveryOptionId){
+                                                            return `Delivery date: ${calculateFutureDayMilliseconds(deliveryOption.deliveryDays).dayOfWeek}, ${dateEstimater(deliveryOption.estimatedDeliveryTimeMs)}`
+                                                        }
+                                                    })
+                                                }
                                             </div>
 
                                             <div className="cart-item-details-grid">
-                                            <img className="product-image"
-                                                src={productIncart.product.image} />
+                                                <img className="product-image"
+                                                    src={productIncart.product.image} />
 
-                                            <div className="cart-item-details">
-                                                <div className="product-name">
-                                                {productIncart.product.name}
+                                                <div className="cart-item-details">
+                                                    <div className="product-name">
+                                                    {productIncart.product.name}
+                                                    </div>
+                                                    <div className="product-price">
+                                                    {formatMoney(productIncart.product.priceCents)}
+                                                    </div>
+                                                    <div className="product-quantity">
+                                                    <span>
+                                                        Quantity: <span className="quantity-label">{productIncart.quantity}</span>
+                                                    </span>
+                                                    <span className="update-quantity-link link-primary">
+                                                        Update
+                                                    </span>
+                                                    <span className="delete-quantity-link link-primary">
+                                                        Delete
+                                                    </span>
+                                                    </div>
                                                 </div>
-                                                <div className="product-price">
-                                                {formatMoney(productIncart.product.priceCents)}
-                                                </div>
-                                                <div className="product-quantity">
-                                                <span>
-                                                    Quantity: <span className="quantity-label">{productIncart.quantity}</span>
-                                                </span>
-                                                <span className="update-quantity-link link-primary">
-                                                    Update
-                                                </span>
-                                                <span className="delete-quantity-link link-primary">
-                                                    Delete
-                                                </span>
-                                                </div>
-                                            </div>
 
-                                            <div className="delivery-options">
-                                                <div className="delivery-options-title">
-                                                Choose a delivery option:
-                                                </div>
-                                                <div className="delivery-option">
-                                                <input type="radio" defaultChecked ={true}
-                                                    className="delivery-option-input"
-                                                    name={`delivery-option-${countOfProduntsInCart}`} />
-                                                <div>
-                                                    <div className="delivery-option-date">
-                                                    Tuesday, June 21
+                                                <div className="delivery-options">
+                                                    <div className="delivery-options-title">
+                                                    Choose a delivery option:
                                                     </div>
-                                                    <div className="delivery-option-price">
-                                                    FREE Shipping
-                                                    </div>
+                                                    {
+                                                        deliveryOptions.map((deliveryOption) =>{
+                                                            return(
+                                                                <div className="delivery-option" key={deliveryOption.id}>
+                                                                    <input type="radio" 
+                                                                        className="delivery-option-input"
+                                                                        name={`delivery-option-${productIncart.id}`}
+                                                                        defaultChecked = {deliveryOption.id === productIncart.
+                                                                            deliveryOptionId}
+                                                                        />
+                                                                    <div>
+                                                                        <div className="delivery-option-date">
+                                                                        {calculateFutureDayMilliseconds(deliveryOption.deliveryDays).dayOfWeek}, {dateEstimater(deliveryOption.estimatedDeliveryTimeMs)}
+                                                                        </div>
+                                                                        <div className="delivery-option-price">
+                                                                        {
+                                                                            (deliveryOption.priceCents == 0 )?'FREE': `${formatMoney(deliveryOption.priceCents)} -`
+                                                                        } Shipping
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
-                                                </div>
-                                                <div className="delivery-option">
-                                                <input type="radio"
-                                                    className="delivery-option-input"
-                                                    name={`delivery-option-${countOfProduntsInCart}`} />
-                                                <div>
-                                                    <div className="delivery-option-date">
-                                                    Wednesday, June 15
-                                                    </div>
-                                                    <div className="delivery-option-price">
-                                                    $4.99 - Shipping
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div className="delivery-option">
-                                                <input type="radio"
-                                                    className="delivery-option-input"
-                                                    name={`delivery-option-${countOfProduntsInCart}`} />
-                                                <div>
-                                                    <div className="delivery-option-date">
-                                                    Monday, June 13
-                                                    </div>
-                                                    <div className="delivery-option-price">
-                                                    $9.99 - Shipping
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
                                             </div>
                                         </div>
                                     );
