@@ -62,7 +62,7 @@ export function CheckoutPage({productsInCart}){
         },500)
     },[]);
     
-    if(productsInCart.length > 0){
+    if(productsInCart.length > 0 && paymentSummary){
         return(
             <>
                 <CheckoutPageHeader/>

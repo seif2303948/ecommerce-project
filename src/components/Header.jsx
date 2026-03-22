@@ -6,16 +6,17 @@ function Header({setText}){
     let [numOfItemsInCart, setNumOfItemsInCart] = useState(0);
     
     useEffect(() => {
-        fetch(`/api/cart-items`)
-        .then((res) => res.json())
-        .then((items) => {
-            let numOfItems = 0;
-            items.map((item) =>{
-                numOfItems += item.quantity;
+        setTimeout(()=>{
+            fetch(`/api/cart-items`)
+            .then((res) => res.json())
+            .then((items) => {
+                let numOfItems = 0;
+                items.map((item) =>{
+                    numOfItems += item.quantity;
+                })
+                setNumOfItemsInCart(`${numOfItems}`);
             })
-            setNumOfItemsInCart(`${numOfItems}`);
         })
-
     },[])
     function textSave(ev){
         setText(ev.target.value);

@@ -7,18 +7,22 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import  Header  from '../components/Header.jsx'
 import '../css/orders.css'
-export function OrderPage({productsInStock}){
+export function OrderPage(){
     let [orderedProducts , setOrderedProducts] = useState([]);
     useEffect(()=>{
-        fetch(`/api/orders`)
-        .then((res)=> res.json())
-        .then((products) => setOrderedProducts(products))
+        setTimeout(()=>{
+            fetch(`/api/orders?expand=products`)
+            .then((res)=> {
+                if(!res.ok){
+                    console.log(`HTTP error ! status ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((products) => setOrderedProducts(products))
+            .catch((error)=>{console.log(error)})
+        },500)
     },[])
-    const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-    ];
-    if(productsInStock.length > 0){
+    if(orderedProducts.length > 0){
         return(
             <>
                 <Header/>
@@ -33,7 +37,9 @@ export function OrderPage({productsInStock}){
                                             <div className="order-header-left-section">
                                             <div className="order-date">
                                                 <div className="order-header-label">Order Placed:</div>
-                                                <div>{monthNames[(new Date(order.orderTimeMs).getMonth())]} {(new Date(order.orderTimeMs).getDate())}</div>
+                                                <div>
+                                                    {dateEstimater(order.orderTimeMs)}
+                                                </div>
                                             </div>
                                             <div className="order-total">
                                                 <div className="order-header-label">Total:</div>
@@ -51,30 +57,12 @@ export function OrderPage({productsInStock}){
                                                 return(
                                                     <div className="order-details-grid" key={productOrdered.productId}>
                                                         <div className="product-image-container">
-                                                            {
-                                                                productsInStock.map((productInStock) => {
-                                                                    if(productInStock.id === productOrdered.productId){
-                                                                        return(
-                                                                            <img src={productInStock.image}  key={productInStock.id}/>
-                                                                        );
-                                                                    }
-                                                                })
-                                                            }
+                                                            {<img src={productOrdered.product.image}/>}
                                                         </div>
 
                                                         <div className="product-details">
                                                         <div className="product-name">
-                                                            {
-                                                                productsInStock.map((productInStock) => {
-                                                                    if(productInStock.id === productOrdered.productId){
-                                                                        return(
-                                                                            <span key={productInStock.id}>
-                                                                                {productInStock.name}
-                                                                            </span>
-                                                                        );
-                                                                    }
-                                                                })
-                                                            }
+                                                            {productOrdered.product.name}
                                                         </div>
                                                         <div className="product-delivery-date">
                                                             Arriving on: {dateEstimater(productOrdered.estimatedDeliveryTimeMs)}
