@@ -1,15 +1,6 @@
-import { useState } from 'react';
-import { numberOfSkeletonLoadingBoxesFun } from '../utils/loading.js';
-import { formatMoney } from '../utils/money.js';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import  Header  from '../components/Header.jsx'
-import '../css/home-page.css'
-
-
-
-
-function Products({text , products}){
+import { LoadingPage } from './LoadingPage.jsx';
+import { formatMoney } from '../../utils/money.js';
+export function Products({text , products}){
     let filteredProducts = products.filter((product) =>
             product.keywords.some((keyword)=>{
                 return keyword.toLowerCase().includes(text.toLowerCase());
@@ -78,63 +69,8 @@ function Products({text , products}){
             </>
         );
     }else{
-        let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(42);
         return(
-            skeletonLoadingBoxes.map((skeletonLoadingBoxNumber)=>{
-                return(
-                    <div  className="product-container" key={skeletonLoadingBoxNumber}>
-                        <div className="product-image-container">
-                            <Skeleton width={220} height={180} />
-                        </div>
-            
-                        <div className="product-name limit-text-to-2-lines">
-                            <Skeleton  />
-                        </div>
-        
-                        <div className="product-rating-container">
-                            <Skeleton width={100} height={20}/>
-                        </div>
-        
-                        <div className="product-price">
-                            <Skeleton  width={50}/>
-                        </div>
-        
-                        <div className="product-quantity-container">
-                            <Skeleton width={50} height={25} />
-                        </div>
-        
-                        <div className="product-spacer">
-                            
-                        </div>
-        
-                        <div className="added-to-cart">
-                            <img src="images/icons/checkmark.png" />
-                            Added
-                        </div>
-                        <Skeleton width={220} height={30}/>
-                        
-                    </div>
-                );
-            })
+            <LoadingPage/>
         )
     }
-}
-export function HomePage({products}){
-    let [text , setText] = useState('');
-    return(
-        <>
-            <Header 
-                setText = {setText}
-                />
-
-            <div className="home-page">
-                <div className="products-grid">
-                    <Products 
-                        text = {text}
-                        products={products}
-                    />
-                </div>
-            </div>
-        </>
-    );
 }
