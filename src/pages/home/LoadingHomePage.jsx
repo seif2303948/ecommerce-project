@@ -1,7 +1,7 @@
 import { numberOfSkeletonLoadingBoxesFun } from '../../utils/loading.js';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-export function LoadingPage(){
+export function LoadingHomePage(){
     let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(42);
     return(
         skeletonLoadingBoxes.map((skeletonLoadingBoxNumber)=>{
