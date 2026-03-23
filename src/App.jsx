@@ -2,7 +2,7 @@ import { useState , useEffect } from 'react';
 import { Routes , Route } from 'react-router'
 import { HomePage } from './pages/home/HomePage';
 import { CheckoutPage } from './pages/checkout/CheckoutPage';
-import { OrderPage } from './pages/OrderPage';
+import { OrderPage } from './pages/order/OrderPage';
 import { TrackingPage } from './pages/TrakingPage';
 
 function App() {
