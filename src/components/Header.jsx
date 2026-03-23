@@ -2,9 +2,18 @@ import { useState , useEffect } from 'react';
 import { Link } from 'react-router'
 import '../css/header.css'
 
-function Header({setText}){
+function Header({setText = () => {}, productsInCart = []}){
     let [numOfItemsInCart, setNumOfItemsInCart] = useState(0);
-    
+    useEffect(()=>{
+        if (productsInCart && productsInCart.length > 0) {
+            let numOfItems = 0;
+            productsInCart.forEach((productInCart)=>{
+            numOfItems += productInCart.quantity;
+            setNumOfItemsInCart(numOfItems);
+        })
+        }
+    },[productsInCart])
+/* 
     useEffect(() => {
         setTimeout(()=>{
             fetch(`/api/cart-items`)
@@ -18,6 +27,7 @@ function Header({setText}){
             })
         })
     },[])
+     */
     function textSave(ev){
         setText(ev.target.value);
     }

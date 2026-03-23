@@ -4,7 +4,7 @@ import { LoadingHomePage } from './LoadingHomePage.jsx';
 import  Header  from '../../components/Header.jsx'
 import '../../css/home-page.css'
 
-export function HomePage({products , loadCart}){
+export function HomePage({products , loadCart , productsInCart}){
     let [text , setText] = useState('');
     
     if(products.length > 0){
@@ -12,7 +12,8 @@ export function HomePage({products , loadCart}){
             <>
                 <Header 
                     setText = {setText}
-                    />
+                    productsInCart = {productsInCart}
+                />
     
                 <div className="home-page">
                     <div className="products-grid">
@@ -32,6 +33,7 @@ export function HomePage({products , loadCart}){
             <>
                 <Header 
                     setText = {setText}
+                    productsInCart = {productsInCart}
                     />
     
                 <div className="home-page">

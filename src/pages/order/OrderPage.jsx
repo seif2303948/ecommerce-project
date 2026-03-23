@@ -1,8 +1,9 @@
 import { useState , useEffect } from 'react';
 import { OrderGrid } from './OrderGrid.jsx';
 import { LoadingOrderPage } from './LoadingOrderPage.jsx';
+import  Header  from '../../components/Header.jsx'
 import '../../css/orders.css'
-export function OrderPage(){
+export function OrderPage({productsInCart}){
     let [orderedProducts , setOrderedProducts] = useState([]);
     useEffect(()=>{
         setTimeout(()=>{
@@ -19,7 +20,10 @@ export function OrderPage(){
     },[])
     if(orderedProducts.length > 0){
         return(
-            <OrderGrid orderedProducts={orderedProducts}/>
+            <>
+                <Header productsInCart={productsInCart}/>
+                <OrderGrid orderedProducts={orderedProducts}/>
+            </>
         );
     }
     else{

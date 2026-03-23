@@ -1,13 +1,11 @@
 import { formatMoney } from '../../utils/money.js';
 import { dateEstimater } from '../../utils/dateEstimater.js';
 import { Link } from 'react-router'
-import  Header  from '../../components/Header.jsx'
 import '../../css/orders.css'
 export function OrderGrid({orderedProducts}){
     
     return(
         <>
-            <Header/>
             <div className="orders-page">
                 <div className="page-title">Your Orders</div>
                 <div className="orders-grid">
