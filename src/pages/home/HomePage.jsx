@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Products } from './ProductsGrid.jsx';
+import {  ProductsGrid } from './ProductsGrid.jsx';
 import { LoadingHomePage } from './LoadingHomePage.jsx';
 import  Header  from '../../components/Header.jsx'
 import '../../css/home-page.css'
 
-export function HomePage({products}){
+export function HomePage({products , loadCart}){
     let [text , setText] = useState('');
+    
     if(products.length > 0){
         return(
             <>
@@ -16,9 +17,10 @@ export function HomePage({products}){
                 <div className="home-page">
                     <div className="products-grid">
                         
-                        <Products 
+                        <ProductsGrid
                             text = {text}
                             products={products}
+                            loadCart={loadCart}
                         />
                     </div>
                 </div>

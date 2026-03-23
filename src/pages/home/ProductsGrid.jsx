@@ -1,5 +1,5 @@
 import { formatMoney } from '../../utils/money.js';
-export function Products({text , products}){
+export function ProductsGrid({text , products , loadCart}){
     let filteredProducts = products.filter((product) =>
             product.keywords.some((keyword)=>{
                 return keyword.toLowerCase().includes(text.toLowerCase());
@@ -54,7 +54,29 @@ export function Products({text , products}){
                                 Added
                             </div>
             
-                            <button className="add-to-cart-button button-primary">
+                            <button className="add-to-cart-button button-primary"
+                                onClick={()=>{
+                                    fetch(`/api/cart-items`,{
+                                        method :`POST`,
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            productId : product.id,
+                                            quantity : 1,
+                                        })
+                                    }).then(res => {
+                                        if (!res.ok) throw new Error('Request failed');
+                                        return res.json();
+                                    })
+                                    .then( data => {
+                                        loadCart()
+                                        return data;
+                                    })
+                                    .then(data => console.log(data))
+                                    .catch(err => console.error(err));
+                                }}
+                            >
                                 Add to Cart
                             </button>
                         </div>

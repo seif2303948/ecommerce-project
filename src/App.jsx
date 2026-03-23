@@ -23,26 +23,29 @@ function App() {
     },500);
   }, []);
   let [productsInCart, setProductsInCart] = useState([]);
+    let loadCart = () =>{
+      fetch(`/api/cart-items?expand=product`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((items) => setProductsInCart(items))
+      .catch((error) => {
+        console.error(error);
+      })
+    };
     useEffect(() => {
         setTimeout(()=>{
-          fetch(`/api/cart-items?expand=product`)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-          })
-          .then((items) => setProductsInCart(items))
-          .catch((error) => {
-            console.error(error);
-          });
+          loadCart()
         },500)
     },[])
     
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage products = {products} productsInCart = {productsInCart}/>}></Route>
+        <Route path='/' element={<HomePage products = {products} loadCart ={loadCart}/>}></Route>
         <Route path='/checkout' element ={<CheckoutPage productsInCart = {productsInCart}/>}></Route>
         <Route path='/orders' element ={<OrderPage productsInStock = {products} productsInCart = {productsInCart}/>}></Route>
         <Route path='/tracking' element ={<TrackingPage productsInCart = {productsInCart}/>}></Route>
