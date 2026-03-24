@@ -2,8 +2,8 @@ import { numberOfSkeletonLoadingBoxesFun } from '../../utils/loading.js';
 import  Header  from '../../components/Header.jsx'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-export function LoadingOrderPage(){
-let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(3);
+export function LoadingOrderPage({numberOfSkeletonLoadingBoxes}){
+let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(numberOfSkeletonLoadingBoxes);
     return(
         <>
             <Header/>

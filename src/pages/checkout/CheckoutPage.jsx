@@ -50,8 +50,9 @@ export function CheckoutPage({productsInCart}){
         );
     }
     else{
+        let numberOfSkeletonLoadingBoxes = 3;
         return(
-            <LoadingCheckoutPage/>
+            <LoadingCheckoutPage numberOfSkeletonLoadingBoxes = {numberOfSkeletonLoadingBoxes}/>
         );
     }
 }

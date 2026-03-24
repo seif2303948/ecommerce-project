@@ -27,8 +27,9 @@ export function OrderPage({productsInCart}){
         );
     }
     else{
+        let numberOfSkeletonLoadingBoxes = 3;
         return(
-            <LoadingOrderPage/>
+            <LoadingOrderPage numberOfSkeletonLoadingBoxes={numberOfSkeletonLoadingBoxes}/>
         );
     }
 }

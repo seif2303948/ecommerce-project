@@ -2,8 +2,8 @@ import { CheckoutPageHeader } from './CheckoutHeader';
 import { numberOfSkeletonLoadingBoxesFun } from '../../utils/loading';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-export function LoadingCheckoutPage(){
-    let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(3)
+export function LoadingCheckoutPage({numberOfSkeletonLoadingBoxes}){
+    let skeletonLoadingBoxes = numberOfSkeletonLoadingBoxesFun(numberOfSkeletonLoadingBoxes)
             return(
                 <>
                     <CheckoutPageHeader/>

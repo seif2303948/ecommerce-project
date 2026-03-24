@@ -29,6 +29,7 @@ export function HomePage({products , loadCart , productsInCart}){
         );
     }
     else{
+        let numberOfSkeletonLoadingBoxes = 42;
         return(
             <>
                 <Header 
@@ -39,7 +40,7 @@ export function HomePage({products , loadCart , productsInCart}){
                 <div className="home-page">
                     <div className="products-grid">
                         
-                        <LoadingHomePage />
+                        <LoadingHomePage numberOfSkeletonLoadingBoxes ={numberOfSkeletonLoadingBoxes}/>
                     </div>
                 </div>
             </>
