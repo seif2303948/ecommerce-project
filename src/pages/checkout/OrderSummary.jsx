@@ -1,10 +1,25 @@
 import { formatMoney } from '../../utils/money';
 import { dateEstimater , calculateFutureDayMilliseconds } from '../../utils/dateEstimater';
-export function OrderSummary({productsInCart , deliveryOptions}){
+export function OrderSummary({productsInCart , deliveryOptions ,loadCart , loadPaymentSummary}){
+    const updateDeliveryOptions = async (productInCartId ,deliveryOptionId) =>{
+        await fetch(`api/cart-items/${productInCartId}`,{
+            method : 'PUT',
+            headers:{
+                'content-type':'application/json'
+            },
+            body: JSON.stringify({
+                deliveryOptionId: deliveryOptionId
+            })
+        }).then(()=>{
+            loadCart();
+            loadPaymentSummary();
+        })
+    }
     return(
         <div className="order-summary">
             {
                 productsInCart.map((productIncart)=>{
+                    
                     return(
                         <div className="cart-item-container" key = {productIncart.id}>
                             <div className="delivery-date">
@@ -48,12 +63,17 @@ export function OrderSummary({productsInCart , deliveryOptions}){
                                     {
                                         deliveryOptions.map((deliveryOption) =>{
                                             return(
-                                                <div className="delivery-option" key={deliveryOption.id}>
+                                                <div className="delivery-option" key={deliveryOption.id}
+                                                    onClick={()=>{
+                                                        updateDeliveryOptions(productIncart.product.id , deliveryOption.id)
+                                                    }}
+                                                >
                                                     <input type="radio" 
-                                                        className="delivery-option-input"
-                                                        name={`delivery-option-${productIncart.id}`}
-                                                        defaultChecked = {deliveryOption.id === productIncart.
-                                                            deliveryOptionId}
+                                                            className="delivery-option-input"
+                                                            name={`delivery-option-${productIncart.id}`}
+                                                            onChange={()=>{}}
+                                                            checked = {deliveryOption.id === productIncart.deliveryOptionId}
+                                                            
                                                         />
                                                     <div>
                                                         <div className="delivery-option-date">

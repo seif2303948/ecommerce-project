@@ -5,9 +5,20 @@ import { useState , useEffect } from 'react';
 import { LoadingCheckoutPage } from './LoadingCheckoutPage';
 import '../../css/checkout.css'
 
-export function CheckoutPage({productsInCart}){
+export function CheckoutPage({productsInCart , loadCart}){
     let [deliveryOptions , setDeliveryOptions] = useState([]);
     let [paymentSummary , setPaymentSummary] = useState(null);
+    let loadPaymentSummary = ()=>{
+        fetch('/api/payment-summary')
+        .then((res)=>{
+            if(!res.ok){
+                console.log(`HTTP error ! status : ${res.status}`)
+            }
+            return res.json();
+        })
+        .then((items) => setPaymentSummary(items))
+        .catch((error)=>{console.log(error)})
+    }
     useEffect(() =>{
         setTimeout(()=>{
             fetch(`/api/delivery-options?expand=estimatedDeliveryTime`)
@@ -21,15 +32,7 @@ export function CheckoutPage({productsInCart}){
             .catch((error)=>{console.log(error)})
         },500)
         setTimeout(()=>{
-            fetch('/api/payment-summary')
-            .then((res)=>{
-                if(!res.ok){
-                    console.log(`HTTP error ! status : ${res.status}`)
-                }
-                return res.json();
-            })
-            .then((items) => setPaymentSummary(items))
-            .catch((error)=>{console.log(error)})
+            loadPaymentSummary();
         },500)
     },[]);
     
@@ -42,7 +45,7 @@ export function CheckoutPage({productsInCart}){
                     <div className="page-title">Review your order</div>
 
                     <div className="checkout-grid">
-                        <OrderSummary productsInCart={productsInCart} deliveryOptions={deliveryOptions}/>
+                        <OrderSummary productsInCart={productsInCart} deliveryOptions={deliveryOptions} loadCart={loadCart} loadPaymentSummary ={loadPaymentSummary}/>
                         {paymentSummary?  <PaymentSummary paymentSummary = {paymentSummary}/>: null}
                     </div>
                 </div>
