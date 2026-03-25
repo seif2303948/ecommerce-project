@@ -41,12 +41,23 @@ function App() {
           loadCart()
         },500)
     },[])
-    
+    let [paymentSummary , setPaymentSummary] = useState(null);
+    let loadPaymentSummary = ()=>{
+        fetch('/api/payment-summary')
+        .then((res)=>{
+            if(!res.ok){
+                console.log(`HTTP error ! status : ${res.status}`)
+            }
+            return res.json();
+        })
+        .then((items) => setPaymentSummary(items))
+        .catch((error)=>{console.log(error)})
+    }
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage products = {products} loadCart ={loadCart} productsInCart = {productsInCart}/>}></Route>
-        <Route path='/checkout' element ={<CheckoutPage productsInCart = {productsInCart} loadCart = {loadCart}/>}></Route>
+        <Route path='/' element={<HomePage products = {products} loadCart ={loadCart} productsInCart = {productsInCart} loadPaymentSummary = {loadPaymentSummary}/>}></Route>
+        <Route path='/checkout' element ={<CheckoutPage productsInCart = {productsInCart} loadCart = {loadCart} paymentSummary ={paymentSummary} loadPaymentSummary = {loadPaymentSummary}/>}></Route>
         <Route path='/orders' element ={<OrderPage productsInStock = {products} productsInCart = {productsInCart}/>}></Route>
         <Route path='/tracking' element ={<TrackingPage productsInCart = {productsInCart}/>}></Route>
       </Routes>

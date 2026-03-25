@@ -69,7 +69,10 @@ export function OrderSummary({productsInCart , deliveryOptions ,loadCart , loadP
                                         Update
                                     </span>
                                     <span className="delete-quantity-link link-primary"
-                                        onClick={()=>removefromCart(productIncart.product.id)}
+                                        onClick={()=>{
+                                            removefromCart(productIncart.product.id)
+                                            loadPaymentSummary()
+                                        }}
                                     >
                                         Delete
                                     </span>

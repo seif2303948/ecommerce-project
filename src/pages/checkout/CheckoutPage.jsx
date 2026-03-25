@@ -5,20 +5,8 @@ import { useState , useEffect } from 'react';
 import { LoadingCheckoutPage } from './LoadingCheckoutPage';
 import '../../css/checkout.css'
 
-export function CheckoutPage({productsInCart , loadCart}){
+export function CheckoutPage({productsInCart , loadCart , paymentSummary , loadPaymentSummary}){
     let [deliveryOptions , setDeliveryOptions] = useState([]);
-    let [paymentSummary , setPaymentSummary] = useState(null);
-    let loadPaymentSummary = ()=>{
-        fetch('/api/payment-summary')
-        .then((res)=>{
-            if(!res.ok){
-                console.log(`HTTP error ! status : ${res.status}`)
-            }
-            return res.json();
-        })
-        .then((items) => setPaymentSummary(items))
-        .catch((error)=>{console.log(error)})
-    }
     useEffect(() =>{
         setTimeout(()=>{
             fetch(`/api/delivery-options?expand=estimatedDeliveryTime`)
@@ -46,7 +34,7 @@ export function CheckoutPage({productsInCart , loadCart}){
 
                     <div className="checkout-grid">
                         <OrderSummary productsInCart={productsInCart} deliveryOptions={deliveryOptions} loadCart={loadCart} loadPaymentSummary ={loadPaymentSummary}/>
-                        {paymentSummary?  <PaymentSummary paymentSummary = {paymentSummary}/>: null}
+                        {paymentSummary?  <PaymentSummary paymentSummary = {paymentSummary} loadPaymentSummary={loadPaymentSummary}/>: null}
                     </div>
                 </div>
             </>
