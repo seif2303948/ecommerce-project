@@ -2,7 +2,38 @@ import { formatMoney } from '../../utils/money.js';
 import { useState } from 'react';
 export function Products({ filteredProducts , loadCart}){
     const [quantity , setQuantity] = useState(1);
+   const [addedToCartClass, setAddedToCartClass] = useState("added-to-cart");
+    const handleAddToCart = () => {
+        setAddedToCartClass("added-to-cart successfully");
     
+        addToCart();
+    
+        // reset after 2 seconds
+        setTimeout(() => {
+            setAddedToCartClass("added-to-cart");
+        }, 2000);
+    };
+
+    let addToCart = ()=>{
+        fetch(`/api/cart-items`,{
+            method :`POST`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId : filteredProducts.id, 
+                quantity : quantity,
+            })
+        }).then(res => {
+            if (!res.ok) throw new Error('Request failed');
+            return res.json();
+        })
+        .then( data => {
+            loadCart();
+            return data;
+        })
+        .catch(err => console.error(err));
+    }
     return(
         <>
             <div  className="product-container">
@@ -47,32 +78,13 @@ export function Products({ filteredProducts , loadCart}){
 
                 <div className="product-spacer"></div>
 
-                <div className="added-to-cart">
+                <div className={addedToCartClass}>
                     <img src="images/icons/checkmark.png" />
                     Added
                 </div>
 
                 <button className="add-to-cart-button button-primary"
-                    onClick={()=>{
-                        fetch(`/api/cart-items`,{
-                            method :`POST`,
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                productId : filteredProducts.id, 
-                                quantity : quantity,
-                            })
-                        }).then(res => {
-                            if (!res.ok) throw new Error('Request failed');
-                            return res.json();
-                        })
-                        .then( data => {
-                            loadCart()
-                            return data;
-                        })
-                        .catch(err => console.error(err));
-                    }}
+                    onClick={handleAddToCart}
                 >
                     Add to Cart
                 </button>

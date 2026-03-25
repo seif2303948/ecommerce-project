@@ -1,8 +1,8 @@
 import { formatMoney } from '../../utils/money';
 import { dateEstimater , calculateFutureDayMilliseconds } from '../../utils/dateEstimater';
 export function OrderSummary({productsInCart , deliveryOptions ,loadCart , loadPaymentSummary}){
-    const updateDeliveryOptions = async (productInCartId ,deliveryOptionId) =>{
-        await fetch(`api/cart-items/${productInCartId}`,{
+    const updateDeliveryOptions = (productInCartId ,deliveryOptionId) =>{
+        fetch(`api/cart-items/${productInCartId}`,{
             method : 'PUT',
             headers:{
                 'content-type':'application/json'
@@ -10,11 +10,29 @@ export function OrderSummary({productsInCart , deliveryOptions ,loadCart , loadP
             body: JSON.stringify({
                 deliveryOptionId: deliveryOptionId
             })
-        }).then(()=>{
+        }).then(res => {
+            if (!res.ok) throw new Error('Request failed');
+            return null; // no JSON expected
+        })
+        .then(()=>{
             loadCart();
             loadPaymentSummary();
         })
+        .catch(err => console.error(err));
     }
+    const removefromCart = (productId) => {
+    fetch(`/api/cart-items/${productId}`, {
+        method: 'DELETE'
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Request failed');
+        return null; // no JSON expected
+    })
+    .then(() => {
+        loadCart();
+    })
+    .catch(err => console.error(err));
+}
     return(
         <div className="order-summary">
             {
@@ -50,7 +68,9 @@ export function OrderSummary({productsInCart , deliveryOptions ,loadCart , loadP
                                     <span className="update-quantity-link link-primary">
                                         Update
                                     </span>
-                                    <span className="delete-quantity-link link-primary">
+                                    <span className="delete-quantity-link link-primary"
+                                        onClick={()=>removefromCart(productIncart.product.id)}
+                                    >
                                         Delete
                                     </span>
                                     </div>
