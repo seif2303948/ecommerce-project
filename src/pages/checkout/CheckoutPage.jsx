@@ -22,7 +22,7 @@ export function CheckoutPage({productsInCart , loadCart , paymentSummary , loadP
         setTimeout(()=>{
             loadPaymentSummary();
         },500)
-    },[]);
+    },[loadPaymentSummary]);
     
     if(productsInCart.length > 0 && paymentSummary){
         return(
