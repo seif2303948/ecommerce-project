@@ -56,7 +56,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage products = {products} loadCart ={loadCart} productsInCart = {productsInCart} loadPaymentSummary = {loadPaymentSummary}/>}></Route>
+        <Route path='/' element={<HomePage products = {products} loadCart ={loadCart} productsInCart = {productsInCart}/>}></Route>
         <Route path='/checkout' element ={<CheckoutPage productsInCart = {productsInCart} loadCart = {loadCart} paymentSummary ={paymentSummary} loadPaymentSummary = {loadPaymentSummary}/>}></Route>
         <Route path='/orders' element ={<OrderPage productsInStock = {products} productsInCart = {productsInCart}/>}></Route>
         <Route path='/tracking' element ={<TrackingPage productsInCart = {productsInCart}/>}></Route>

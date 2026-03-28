@@ -6,7 +6,6 @@ import '../../css/home-page.css'
 
 export function HomePage({products , loadCart , productsInCart}){
     let [text , setText] = useState('');
-    
     if(products.length > 0){
         return(
             <>
