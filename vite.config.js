@@ -9,9 +9,6 @@ export default defineConfig({
     proxy:{
       '/api':{
         target:'https://unhospitalized-rohan-prototypic.ngrok-free.dev'
-      },
-      '/images':{
-        target:'https://unhospitalized-rohan-prototypic.ngrok-free.dev'
       }
     }
   }
