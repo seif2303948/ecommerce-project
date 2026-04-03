@@ -7,15 +7,15 @@ export default defineConfig({
   base: "/ecommerce-project/",
   plugins: [react()],
   server :{
-    proxy:{
-      '/api':{
+    proxy:{ 
+      /* '/api':{
         target:'https://unhospitalized-rohan-prototypic.ngrok-free.dev',
         changeOrigin:true
-      },
-      '/images':{
+      }, */
+      /* '/images':{
         target:'https://unhospitalized-rohan-prototypic.ngrok-free.dev',
         changeOrigin:true
-      }
+      } */
     }
   }
 })
